@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+        <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+        <title>Hello APP</title>
+        <link rel="stylesheet" type="text/css" href="./css/api.css" />
+        <link rel="stylesheet" type="text/css" href="./css/aui.css" />
+        <style type="text/css">
+            html, body {
+                height: 100%;
+            }
+            #wrap {
+                height: 100%;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-flex-flow: column;
+            }
+            #header {
+                text-align: center;
+                background-color: #81a9c3;
+                color: #fff;
+                width: 100%;
+            }
+            #header h1 {
+                font-size: 20px;
+                height: 44px;
+                line-height: 44px;
+                margin: 0em;
+                color: #fff;
+            }
+            #main {
+                -webkit-box-flex: 1;
+                -webkit-flex: 1;
+            }
+            #footer {
+                height: 30px;
+                line-height: 30px;
+                background-color: #81a9c3;
+                width: 100%;
+                text-align: center;
+            }
+            #footer h5 {
+                color: white;
+            }
+            .con {
+                font-size: 28px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="wrap">
+            <div id="header" style="height: 20px">
+                <h3 >APICloud</h3>
+            </div>
+            <div id="main">
+                <ul class="aui-list-view">
+                    <li class="aui-list-view-cell">
+                        单行列表标题效果
+                    </li>
+                    <li class="aui-list-view-cell">
+                        单行列表标题效果
+                    </li>
+                    <li class="aui-list-view-cell">
+                        单行列表标题效果
+                    </li>
+                    <li class="aui-list-view-cell">
+                        单行列表标题效果
+                    </li>
+                    <li class="aui-list-view-cell">
+                        单行列表标题效果
+                    </li>
+                </ul>
+            </div>
+            <div id="footer">
+                <h5>Copyright &copy;<span id="year"></span></h5>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="./script/aui-alert.js"></script>
+    <script type="text/javascript" src="./script/api.js"></script>
+    <script type="text/javascript">
+       /* function Toast(message, back) {
+            var cs = "width : 100%; bottom : 20%; text-align : center; background: blue;  position : fixed; z-index : 3";
+            var time = back == 1 ? 2000 : 5000;
+            var aler = document.createElement("DIV");
+            var myWidth = window.screen.width;
+            //屏幕宽
+            aler.id = "aler";
+            aler.style.cssText = cs;
+            var tos = '<div  style=" background: #000000; text-align: center; border-radius: 5px; color: #ffffff; z-index: 3; min-width: 10px;min-height: 20px; font-size: smaller;">';
+            tos += (message == undefined ? "" : message) + '</div>';
+            aler.innerHTML = tos;
+            aler.style.display = "block";
+            var yt = aler.children;
+            document.getElementById("wrap").appendChild(aler);
+            /*setTimeout(function() {
+            document.getElementById("wrap").removeChild(aler);
+            }, time)
+            //document.getElementById("wrap").removeChild(aler);
+            Toast("测试", 1);
+        }*/
+
+        
+        apiready = function() {
+            //输出Log，Log将显示在APICloud Studio控制台
+            console.log("Hello APICloud");
+            //var header = $api.byId('header');
+            //适配iOS7+，Android4.4+状态栏沉浸式效果，详见config文档statusBarAppearance字段
+            //$api.fixStatusBar(header);
+            //动态计算header的高度，因iOS7+和Android4.4+上支持沉浸式效果，
+            //因此header的实际高度可能为css样式中声明的44px加上设备状态栏高度
+            //其中，IOS状态栏高度为20px，Android为25px
+            //var headerH = $api.offset(header).h;
+            //footer高度为css样式中声明的30px
+            //var footerH = 30;
+            //frame的高度为当前window高度减去header和footer的高度
+            //var frameH = api.winHeight - headerH - footerH;
+            /*api.openFrame({
+            name : 'main',
+            url : 'html/main.html',
+            bounces : true,
+            rect : {
+            x : 0,
+            y : headerH,
+            w : 'auto',
+            h : frameH
+            }
+            });*/
+            //var year = $api.byId('year');
+            //year.innerHTML = new Date().getFullYear();
+            var dbname = "/sdcard/餐饮管理/餐饮.db";
+            console.log("【HelloWorld......】");
+            //alert("测试测\n测试试");
+            //文件名
+            var db = api.require('db');
+            /**
+             *创建数据库 
+             */
+            db.openDatabase({
+                name : dbname
+            }, function(ret, err) {
+                if (ret.status) {
+                    //alert("创建数据库");
+                    console.log("【创建数据库：" + JSON.stringify(ret) + "】");
+                    newTable();
+                } else {
+                    console.log("【创建数据库：" + JSON.stringify(err) + "】");
+                }
+            });
+            /**
+             *创建数据库表 
+             */
+            function newTable() {
+            
+                db.executeSql({
+                    name : dbname,
+                    sql : 'CREATE TABLE IF NOT EXISTS jiuShui (id NUMBER,chanDi VARCHAR(200),danWei VARCHAR(10),pinPai VARCHAR(100),jiaGe VARCHAR(10),name VARCHAR(20))'
+                }, function(ret, err) {
+                    if (ret.status) {
+                        console.log("【创建表成功！" + JSON.stringify(ret) + "】");
+                    } else {
+                        console.log("【创建表失败！" + JSON.stringify(err) + "】");
+                    }
+                });
+            }
+
+        };
+    </script>
+</html>
